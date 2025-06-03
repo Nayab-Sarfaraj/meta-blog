@@ -10,7 +10,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: ["https://blog-website-nine-eta.vercel.app/"],
+    origin: ["https://blog-website-nine-eta.vercel.app"],
   })
 );
 app.use(express.urlencoded({ extended: false }));
