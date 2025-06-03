@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { URL } from "../../constants/constant";
 
 const STATUSES = {
   LOADING: "loading",
@@ -36,7 +37,9 @@ export const searchSlice = createSlice({
 export const searchBlogs = createAsyncThunk(
   "searchBlogs",
   async (searchInput) => {
-    const { data } = await axios.post(`search?searchInput=${searchInput}`);
+    const { data } = await axios.post(
+      `${URL}/search?searchInput=${searchInput}`
+    );
 
     return data;
   }

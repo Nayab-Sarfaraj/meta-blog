@@ -32,3 +32,5 @@ export const CATEGORY = {
   ECONOMY: "economy",
   SPORTS: "sports",
 };
+
+export const URL = "https://blog-website-production-0e09.up.railway.app/api/v1";

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { URL } from "../../constants/constant";
 
 const STATUSES = {
   LOADING: "loading",
@@ -153,7 +154,7 @@ export const registerUser = createAsyncThunk(
   "registerUser",
   async ({ name, email, password }) => {
     try {
-      const { data } = await axios.post("/register", {
+      const { data } = await axios.post(`${URL}/register`, {
         name,
         email,
         password,
@@ -170,7 +171,7 @@ export const loginUser = createAsyncThunk(
   "loginUser",
   async ({ password, email }) => {
     try {
-      const { data } = await axios.post("/login", { email, password });
+      const { data } = await axios.post(`${URL}/login`, { email, password });
       return data;
     } catch (error) {
       return error.response.data;
@@ -180,9 +181,7 @@ export const loginUser = createAsyncThunk(
 export const fetchUserProfile = createAsyncThunk(
   "fetchUserProfile",
   async () => {
-    const { data } = await axios.get(
-      "https://blog-website-production-0e09.up.railway.app/api/v1/me"
-    );
+    const { data } = await axios.get(`${URL}/me`);
     return data;
   }
 );
@@ -190,7 +189,7 @@ export const UpdateProfilePicture = createAsyncThunk(
   "UpdateProfilePicture",
   async (formData) => {
     try {
-      const { data } = await axios.post("/upload/profilePic", formData, {
+      const { data } = await axios.post(`${URL}/upload/profilePic`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -205,7 +204,7 @@ export const completeProfile = createAsyncThunk(
   "completeProfile",
   async ({ bio, profession, name, contactInfo }) => {
     try {
-      const { data } = await axios.put("/completeProfile", {
+      const { data } = await axios.put(`${URL}/completeProfile`, {
         bio,
         profession,
         name,
@@ -219,7 +218,7 @@ export const completeProfile = createAsyncThunk(
   }
 );
 export const logout = createAsyncThunk("logout", async () => {
-  const data = await axios.get("logout");
+  const data = await axios.get(`${URL}/logout`);
   return data;
 });
 
@@ -227,7 +226,7 @@ export const updatePassword = createAsyncThunk(
   "updatePassword",
   async ({ newPassword, oldPassword }) => {
     try {
-      const { data } = await axios.patch("/updatePassword", {
+      const { data } = await axios.patch(`${URL}/updatePassword`, {
         newPassword,
         oldPassword,
       });
@@ -240,7 +239,7 @@ export const updatePassword = createAsyncThunk(
 export const forgotPassword = createAsyncThunk(
   "forgotPassword",
   async (email) => {
-    const { data } = await axios.post("/forgotPassword", { email });
+    const { data } = await axios.post(`${URL}/forgotPassword`, { email });
     return data;
   }
 );
@@ -248,25 +247,25 @@ export const resetPassword = createAsyncThunk(
   "resetPassword",
   async ({ token, password }) => {
     console.log(token, password);
-    const { data } = await axios.put(`/resetPassword/${token}`, {
+    const { data } = await axios.put(`${URL}/resetPassword/${token}`, {
       password,
     });
     return data;
   }
 );
 export const increaseLike = createAsyncThunk("increaseLike", async (id) => {
-  const { data } = await axios.post(`/like/${id}`);
+  const { data } = await axios.post(`${URL}/like/${id}`);
   return data;
 });
 export const decreaseLike = createAsyncThunk("decreaseLike", async (id) => {
-  const { data } = await axios.post(`/unlike/${id}`);
+  const { data } = await axios.post(`${URL}/unlike/${id}`);
   console.log(data);
   return data;
 });
 export const addComment = createAsyncThunk(
   "addComment",
   async ({ comment, id }) => {
-    const { data } = await axios.post(`/addcomment/${id}`, { comment });
+    const { data } = await axios.post(`${URL}/addcomment/${id}`, { comment });
     return data;
   }
 );

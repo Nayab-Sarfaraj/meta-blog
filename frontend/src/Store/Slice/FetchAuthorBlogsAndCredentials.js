@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { URL } from "../../constants/constant";
 
 const STATUSES = {
   LOADING: "loading",
@@ -36,7 +37,7 @@ export const authorCredentialsSlice = createSlice({
 export const fetchAuthorBlogAndCredentials = createAsyncThunk(
   "fetchAuthorBlogAndCredentials",
   async (id) => {
-    const { data } = await axios.get(`/author/${id}`);
+    const { data } = await axios.get(`${URL}/author/${id}`);
 
     return data;
   }

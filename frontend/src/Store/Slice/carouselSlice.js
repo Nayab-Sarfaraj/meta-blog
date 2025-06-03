@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { URL } from "../../constants/constant";
 
 const STATUSES = {
   LOADING: "loading",
@@ -34,9 +35,7 @@ export const carouselSlice = createSlice({
 });
 
 export const getCarousel = createAsyncThunk("getCarousel", async () => {
-  const { data } = await axios.get(
-    "https://blog-website-production-0e09.up.railway.app/carousel"
-  );
+  const { data } = await axios.get(`${URL}/carousel`);
 
   return data;
 });

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { URL } from "../../constants/constant";
 
 const STATUSES = {
   LOADING: "loading",
@@ -34,7 +35,7 @@ export const myBlogSlice = createSlice({
 });
 
 export const fetchMyBlogs = createAsyncThunk("fetchMyBlogs", async () => {
-  const { data } = await axios.get("/myBlogs");
+  const { data } = await axios.get(`${URL}/myBlogs`);
 
   return data;
 });

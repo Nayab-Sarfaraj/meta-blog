@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { URL } from "../../constants/constant";
 
 const STATUSES = {
   LOADING: "loading",
@@ -35,7 +36,7 @@ export const createBlogSlice = createSlice({
 
 export const createBlog = createAsyncThunk("createBlog", async (formData) => {
   try {
-    const { data } = await axios.post("/create", formData, {
+    const { data } = await axios.post(`${URL}/create`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

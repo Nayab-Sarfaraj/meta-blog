@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { URL } from "../../constants/constant";
 
 const STATUSES = {
   LOADING: "loading",
@@ -62,12 +63,12 @@ export const singleBlogSlice = createSlice({
 });
 
 export const fetchBlog = createAsyncThunk("fetchBlog", async (id) => {
-  const { data } = await axios.get(`/blog/${id}`);
+  const { data } = await axios.get(`${URL}/blog/${id}`);
 
   return data;
 });
 export const deleteBlog = createAsyncThunk("deleteBlog", async (id) => {
-  const { data } = await axios.delete(`/blog/${id}`);
+  const { data } = await axios.delete(`${URL}/blog/${id}`);
 
   return data;
 });
@@ -75,7 +76,7 @@ export const editBlog = createAsyncThunk(
   "editBlog",
   async ({ id, formData }) => {
     try {
-      const { data } = await axios.put(`/blog/${id}`, formData, {
+      const { data } = await axios.put(`${URL}/blog/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
