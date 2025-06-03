@@ -16,7 +16,6 @@ app.use(
 app.use(express.urlencoded({ extended: false }));
 const userRouter = require("./routes/userRoutes");
 app.get("/", (req, res) => res.send("ok"));
-app.use("/test", (req, res, next) => {});
 app.use("/api/v1", userRouter);
 const blogRouter = require("./routes/blogRoutes");
 app.use("/api/v1", blogRouter);

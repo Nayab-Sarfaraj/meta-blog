@@ -34,7 +34,9 @@ export const carouselSlice = createSlice({
 });
 
 export const getCarousel = createAsyncThunk("getCarousel", async () => {
-  const { data } = await axios.get("/carousel");
+  const { data } = await axios.get(
+    "https://blog-website-production-0e09.up.railway.app/carousel"
+  );
 
   return data;
 });

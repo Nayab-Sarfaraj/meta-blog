@@ -180,7 +180,9 @@ export const loginUser = createAsyncThunk(
 export const fetchUserProfile = createAsyncThunk(
   "fetchUserProfile",
   async () => {
-    const { data } = await axios.get("/me");
+    const { data } = await axios.get(
+      "https://blog-website-production-0e09.up.railway.app/api/v1/me"
+    );
     return data;
   }
 );
