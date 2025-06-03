@@ -42,10 +42,10 @@ const login = async (req, res, next) => {
       expiresIn: "1w",
     });
     res.cookie("token", token, {
-      httpOnly: true, // Secure from XSS attacks
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax", // Required for cross-origin requests
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      httpOnly: true,
+      secure: true, // Always true for HTTPS (Railway uses HTTPS)
+      sameSite: "None", // Required for cross-origin cookies (frontend ↔ backend)
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
     return res.json({ success: true, token, user });
   } catch (error) {
