@@ -7,7 +7,12 @@ const cors = require("cors");
 connectToDb();
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ credentials: true }));
+app.use(
+  cors({
+    credentials: true,
+    origin: ["https://blog-website-nine-eta.vercel.app/"],
+  })
+);
 app.use(express.urlencoded({ extended: false }));
 const userRouter = require("./routes/userRoutes");
 app.get("/", (req, res) => res.send("ok"));
