@@ -68,7 +68,9 @@ export const fetchBlog = createAsyncThunk("fetchBlog", async (id) => {
   return data;
 });
 export const deleteBlog = createAsyncThunk("deleteBlog", async (id) => {
-  const { data } = await axios.delete(`${URL}/blog/${id}`);
+  const { data } = await axios.delete(
+    `https://blog-website-production-0e09.up.railway.app/api/v1/blogs/blog/${id}`
+  );
 
   return data;
 });

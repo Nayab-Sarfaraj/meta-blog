@@ -279,15 +279,21 @@ export const resetPassword = createAsyncThunk(
   }
 );
 export const increaseLike = createAsyncThunk("increaseLike", async (id) => {
-  const { data } = await axios.post(`${URL}/like/${id}`, {
-    withCredentials: true,
-  });
+  const { data } = await axios.post(
+    `https://blog-website-production-0e09.up.railway.app/api/v1/blogs/like/${id}`,
+    {
+      withCredentials: true,
+    }
+  );
   return data;
 });
 export const decreaseLike = createAsyncThunk("decreaseLike", async (id) => {
-  const { data } = await axios.post(`${URL}/unlike/${id}`, {
-    withCredentials: true,
-  });
+  const { data } = await axios.post(
+    `https://blog-website-production-0e09.up.railway.app/api/v1/blogs/unlike/${id}`,
+    {
+      withCredentials: true,
+    }
+  );
   // console.log(data);
   return data;
 });
