@@ -3,7 +3,7 @@ module.exports = (err, req, res, next) => {
 
   const statusCode = err.status || 500;
   const message = err.message || "Internal Server Error";
-  console.log("send");
+  // console.log("send");
   res.status(statusCode).json({
     success: false,
     message: message,

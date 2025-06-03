@@ -246,7 +246,7 @@ export const forgotPassword = createAsyncThunk(
 export const resetPassword = createAsyncThunk(
   "resetPassword",
   async ({ token, password }) => {
-    console.log(token, password);
+    // console.log(token, password);
     const { data } = await axios.put(`${URL}/resetPassword/${token}`, {
       password,
     });
@@ -259,7 +259,7 @@ export const increaseLike = createAsyncThunk("increaseLike", async (id) => {
 });
 export const decreaseLike = createAsyncThunk("decreaseLike", async (id) => {
   const { data } = await axios.post(`${URL}/unlike/${id}`);
-  console.log(data);
+  // console.log(data);
   return data;
 });
 export const addComment = createAsyncThunk(

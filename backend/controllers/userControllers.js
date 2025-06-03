@@ -10,7 +10,7 @@ const register = async (req, res, next) => {
     if (!email || !password || !name)
       return next(new ErrorHandler("all fields are required", 401));
     const user = await User.findOne({ email });
-    console.log(user);
+    // console.log(user);
     if (user) return next(new ErrorHandler("User already exist", 401));
     const newuser = await User({
       email,
@@ -22,7 +22,7 @@ const register = async (req, res, next) => {
     const saveduser = await newuser.save();
     return res.json({ success: true, saveduser });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return next(new ErrorHandler(error.message, 500));
   }
 };
@@ -41,10 +41,15 @@ const login = async (req, res, next) => {
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1w",
     });
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true, // Secure from XSS attacks
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Lax", // Required for cross-origin requests
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     return res.json({ success: true, token, user });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return next(new ErrorHandler(error.message, 500));
   }
 };
@@ -58,7 +63,7 @@ const getUserProfile = async (req, res, next) => {
       user,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return next(new ErrorHandler(error.message, 500));
   }
 };
@@ -67,7 +72,7 @@ const logout = async (req, res, next) => {
     res.cookie("token", undefined);
     return res.json({ success: true, message: "Logout successfully" });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return next(new ErrorHandler(error.message, 500));
   }
 };
@@ -79,7 +84,7 @@ const forgotPassword = async (req, res, next) => {
 
     if (!user) return next(new ErrorHandler("Email does not exist", 401));
     const response = await sendMail(email, user._id);
-    console.log(response);
+    // console.log(response);
     return res.json({ success: true, message: "sent message successfully" });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -87,11 +92,11 @@ const forgotPassword = async (req, res, next) => {
 };
 const resetPassword = async (req, res, next) => {
   try {
-    console.log("running");
-    console.log(req.params);
+    // console.log("running");
+    // console.log(req.params);
     const token = req.params.token;
     const { password } = req.body;
-    console.log(token);
+    // console.log(token);
     const { userId } = await jwt.verify(token, process.env.SECRET_KEY);
     const user = await User.findById(userId);
     if (!user) return next(new ErrorHandler("Token expired", 401));
@@ -120,8 +125,8 @@ const updatePassword = async (req, res, next) => {
 };
 const uploadProfilePhoto = async (req, res, next) => {
   try {
-    console.log(req.body);
-    console.log(req.file);
+    // console.log(req.body);
+    // console.log(req.file);
     const response = await uploadOnCloudinary(req.file.path);
     const user = await User.findById(req.user._id);
     user.avatar = response.url;
@@ -137,7 +142,7 @@ const completeProfile = async (req, res, next) => {
     const id = req.user._id;
     let updatedUser = {};
     if (req.body.contactInfo.length !== 0) {
-      console.log("kk");
+      // console.log("kk");
       const user = await User.findById(id);
       user.contactInfo = [...req.body.contactInfo];
       if (req.body.bio) user.bio = req.body.bio;

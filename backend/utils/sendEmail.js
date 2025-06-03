@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sendMail = async (email, userId) => {
   try {
-    console.log("rn");
+    // console.log("rn");
 
     const transporter = nodemailer.createTransport({
       host: "sandbox.smtp.mailtrap.io",
@@ -17,8 +17,8 @@ const sendMail = async (email, userId) => {
     const token = jwt.sign({ userId }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-    console.log(token);
-    console.log(email);
+    // console.log(token);
+    // console.log(email);
     const mailOptions = {
       from: "nayabsarfaraj@gmail.com",
       to: email,
@@ -30,7 +30,7 @@ const sendMail = async (email, userId) => {
     };
     const info = await transporter.sendMail(mailOptions);
 
-    console.log("Message sent: ", info.messageId);
+    // console.log("Message sent: ", info.messageId);
     return info;
   } catch (error) {
     console.log("error while sending the email");

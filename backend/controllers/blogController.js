@@ -10,7 +10,7 @@ const updateBlog = async (req, res, next) => {
     if (!blog) return next(new ErrorHandler("blog not found", 404));
     let url = "";
     if (req.file?.path) {
-      console.log("hsa");
+      // console.log("hsa");
       const filePath = req?.file?.path;
       url = await uploadOnCloudinary(filePath);
     }
@@ -51,11 +51,11 @@ const getMyBlog = async (req, res, next) => {
 const getSingleBlog = async (req, res, next) => {
   try {
     const id = req.params.id;
-    console.log(id);
+    id;
     const blog = await Blog.findById(id)
       .populate("author")
       .populate({ path: "comments.userId", select: "name avatar" });
-    console.log(blog);
+    // console.log(blog);
     if (!blog) return next(new ErrorHandler("Blog not found", 404));
     return res.json({ success: true, blog });
   } catch (error) {
@@ -72,7 +72,7 @@ const getAllBlogs = async (req, res, next) => {
       .skip(toBeSkipped)
       .sort({ createdAt: -1 })
       .populate("author");
-    console.log(blogs);
+    // console.log(blogs);
     return res.json({ success: true, blogs });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -81,15 +81,15 @@ const getAllBlogs = async (req, res, next) => {
 
 const createBlog = async (req, res, next) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     const { description, title, category } = req.body;
-    console.log(req.file);
+    // console.log(req.file);
     const filePath = req.file?.path;
     if (!description || !title || !category || !filePath)
       return next(new ErrorHandler("All fields are required", 500));
 
     const coverImage = await uploadOnCloudinary(filePath);
-    console.log(coverImage);
+    // console.log(coverImage);
     const newBlog = new Blog({
       description,
       title,
@@ -105,7 +105,7 @@ const createBlog = async (req, res, next) => {
       savedBlog,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return next(new ErrorHandler(error.message, 500));
   }
 };
