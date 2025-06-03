@@ -69,7 +69,7 @@ export const fetchBlog = createAsyncThunk("fetchBlog", async (id) => {
 });
 export const deleteBlog = createAsyncThunk("deleteBlog", async (id) => {
   const { data } = await axios.delete(
-    `https://blog-website-production-0e09.up.railway.app/api/v1/blogs/blog/${id}`
+    `https://blog-website-production-0e09.up.railway.app/api/v1/blog/${id}`
   );
 
   return data;

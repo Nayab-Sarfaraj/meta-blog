@@ -280,7 +280,7 @@ export const resetPassword = createAsyncThunk(
 );
 export const increaseLike = createAsyncThunk("increaseLike", async (id) => {
   const { data } = await axios.post(
-    `https://blog-website-production-0e09.up.railway.app/api/v1/blogs/like/${id}`,
+    `https://blog-website-production-0e09.up.railway.app/api/v1/like/${id}`,
     {
       withCredentials: true,
     }
@@ -289,7 +289,7 @@ export const increaseLike = createAsyncThunk("increaseLike", async (id) => {
 });
 export const decreaseLike = createAsyncThunk("decreaseLike", async (id) => {
   const { data } = await axios.post(
-    `https://blog-website-production-0e09.up.railway.app/api/v1/blogs/unlike/${id}`,
+    `https://blog-website-production-0e09.up.railway.app/api/v1/unlike/${id}`,
     {
       withCredentials: true,
     }

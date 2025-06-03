@@ -1,25 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleTheme } from "../../Store/Slice/ThemeSlice";
-import Header from "../../Component/Header";
-import Footer from "../../Component/Footer";
-import profilePic from "../../assets/profile.png";
-import descriptionImg from "../../assets/desciption.png";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import { deleteBlog, fetchBlog } from "../../Store/Slice/SingleBlog";
-import ReactTimeAgo from "react-time-ago";
-import Loader from "../../Component/Loader";
-import { fetchBlogs, STATUSES } from "../../Store/Slice/AllBlogsSlice";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { FaRegStar, FaStar } from "react-icons/fa6";
 import { MdDelete } from "react-icons/md";
 import { RiFileEditFill } from "react-icons/ri";
-import { FaStar } from "react-icons/fa6";
-import { FaRegStar } from "react-icons/fa6";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import ReactTimeAgo from "react-time-ago";
+import Footer from "../../Component/Footer";
+import Header from "../../Component/Header";
+import Loader from "../../Component/Loader";
+import { fetchBlogs, STATUSES } from "../../Store/Slice/AllBlogsSlice";
+import { deleteBlog, fetchBlog } from "../../Store/Slice/SingleBlog";
 import {
   addComment,
   decreaseLike,
   increaseLike,
 } from "../../Store/Slice/UserAuthentication";
-import toast from "react-hot-toast";
 const BlogDescription = () => {
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
@@ -34,7 +30,7 @@ const BlogDescription = () => {
   const status = useSelector((state) => state.singleBlog.status);
   const handleDelete = async () => {
     setIsLoading(true);
-    const res = await dispatch(deleteBlog(blog._id));
+    const res = await dispatch(deleteBlog(blog?._id));
 
     if (res.payload.success) navigate("/");
     setIsLoading(false);
@@ -51,7 +47,7 @@ const BlogDescription = () => {
   }, [params, id]);
   useEffect(() => {
     if (blog && blog.likes !== 0) {
-      setLikeCount(blog.likes);
+      setLikeCount(blog?.likes);
       user?.likedBlogs.forEach((liked) => {
         liked.toString() === blog._id.toString() && setIsLiked(true);
       });
@@ -60,11 +56,11 @@ const BlogDescription = () => {
 
   const like = async () => {
     setIsLiked(true);
-    dispatch(increaseLike(blog._id));
+    dispatch(increaseLike(blog?._id));
     setLikeCount((count) => count + 1);
   };
   const dislike = async () => {
-    dispatch(decreaseLike(blog._id));
+    dispatch(decreaseLike(blog?._id));
     setIsLiked(false);
     if (likeCount >= 1) setLikeCount((count) => count - 1);
   };
@@ -72,7 +68,7 @@ const BlogDescription = () => {
     e.preventDefault();
 
     setIsLoading(true);
-    await dispatch(addComment({ comment, id: blog._id }));
+    await dispatch(addComment({ comment, id: blog?._id }));
     await fetchData();
     setIsLoading(false);
     setComment("");
