@@ -154,11 +154,15 @@ export const registerUser = createAsyncThunk(
   "registerUser",
   async ({ name, email, password }) => {
     try {
-      const { data } = await axios.post(`${URL}/register`, {
-        name,
-        email,
-        password,
-      });
+      const { data } = await axios.post(
+        `${URL}/register`,
+        {
+          name,
+          email,
+          password,
+        },
+        { withCredentials: true }
+      );
 
       return data;
     } catch (error) {
@@ -197,6 +201,7 @@ export const UpdateProfilePicture = createAsyncThunk(
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       });
       return data;
     } catch (error) {
@@ -208,12 +213,16 @@ export const completeProfile = createAsyncThunk(
   "completeProfile",
   async ({ bio, profession, name, contactInfo }) => {
     try {
-      const { data } = await axios.put(`${URL}/completeProfile`, {
-        bio,
-        profession,
-        name,
-        contactInfo,
-      });
+      const { data } = await axios.put(
+        `${URL}/completeProfile`,
+        {
+          bio,
+          profession,
+          name,
+          contactInfo,
+        },
+        { withCredentials: true }
+      );
 
       return data;
     } catch (error) {
@@ -222,7 +231,7 @@ export const completeProfile = createAsyncThunk(
   }
 );
 export const logout = createAsyncThunk("logout", async () => {
-  const data = await axios.get(`${URL}/logout`);
+  const data = await axios.get(`${URL}/logout`, { withCredentials: true });
   return data;
 });
 
@@ -230,10 +239,14 @@ export const updatePassword = createAsyncThunk(
   "updatePassword",
   async ({ newPassword, oldPassword }) => {
     try {
-      const { data } = await axios.patch(`${URL}/updatePassword`, {
-        newPassword,
-        oldPassword,
-      });
+      const { data } = await axios.patch(
+        `${URL}/updatePassword`,
+        {
+          newPassword,
+          oldPassword,
+        },
+        { withCredentials: true }
+      );
       return data;
     } catch (error) {
       return error.response.data;
@@ -243,7 +256,11 @@ export const updatePassword = createAsyncThunk(
 export const forgotPassword = createAsyncThunk(
   "forgotPassword",
   async (email) => {
-    const { data } = await axios.post(`${URL}/forgotPassword`, { email });
+    const { data } = await axios.post(
+      `${URL}/forgotPassword`,
+      { email },
+      { withCredentials: true }
+    );
     return data;
   }
 );
@@ -251,25 +268,37 @@ export const resetPassword = createAsyncThunk(
   "resetPassword",
   async ({ token, password }) => {
     // console.log(token, password);
-    const { data } = await axios.put(`${URL}/resetPassword/${token}`, {
-      password,
-    });
+    const { data } = await axios.put(
+      `${URL}/resetPassword/${token}`,
+      {
+        password,
+      },
+      { withCredentials: true }
+    );
     return data;
   }
 );
 export const increaseLike = createAsyncThunk("increaseLike", async (id) => {
-  const { data } = await axios.post(`${URL}/like/${id}`);
+  const { data } = await axios.post(`${URL}/like/${id}`, {
+    withCredentials: true,
+  });
   return data;
 });
 export const decreaseLike = createAsyncThunk("decreaseLike", async (id) => {
-  const { data } = await axios.post(`${URL}/unlike/${id}`);
+  const { data } = await axios.post(`${URL}/unlike/${id}`, {
+    withCredentials: true,
+  });
   // console.log(data);
   return data;
 });
 export const addComment = createAsyncThunk(
   "addComment",
   async ({ comment, id }) => {
-    const { data } = await axios.post(`${URL}/addcomment/${id}`, { comment });
+    const { data } = await axios.post(
+      `${URL}/addcomment/${id}`,
+      { comment },
+      { withCredentials: true }
+    );
     return data;
   }
 );

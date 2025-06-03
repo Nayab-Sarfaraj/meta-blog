@@ -37,7 +37,9 @@ export const authorCredentialsSlice = createSlice({
 export const fetchAuthorBlogAndCredentials = createAsyncThunk(
   "fetchAuthorBlogAndCredentials",
   async (id) => {
-    const { data } = await axios.get(`${URL}/author/${id}`);
+    const { data } = await axios.get(`${URL}/author/${id}`, {
+      withCredentials: true,
+    });
 
     return data;
   }

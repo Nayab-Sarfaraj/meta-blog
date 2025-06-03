@@ -38,7 +38,8 @@ export const searchBlogs = createAsyncThunk(
   "searchBlogs",
   async (searchInput) => {
     const { data } = await axios.post(
-      `${URL}/search?searchInput=${searchInput}`
+      `${URL}/search?searchInput=${searchInput}`,
+      { withCredentials: true }
     );
 
     return data;

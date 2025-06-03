@@ -80,6 +80,7 @@ export const editBlog = createAsyncThunk(
         headers: {
           "Content-Type": "multipart/form-data",
         },
+        withCredentials: true,
       });
       return data;
     } catch (error) {

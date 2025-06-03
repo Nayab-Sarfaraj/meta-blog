@@ -40,6 +40,7 @@ export const createBlog = createAsyncThunk("createBlog", async (formData) => {
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      withCredentials: true,
     });
 
     return data;

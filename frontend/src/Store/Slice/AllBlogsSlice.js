@@ -37,7 +37,8 @@ export const fetchBlogs = createAsyncThunk("fetchBlogs", async (page) => {
   try {
     if (page <= 0 || !page) page = 1;
     const { data } = await axios.get(
-      `https://blog-website-production-0e09.up.railway.app/api/v1/blogs?page=${page}`
+      `https://blog-website-production-0e09.up.railway.app/api/v1/blogs?page=${page}`,
+      { withCredentials: true }
     );
     return data;
   } catch (error) {
