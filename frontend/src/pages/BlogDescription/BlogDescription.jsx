@@ -9,7 +9,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { deleteBlog, fetchBlog } from "../../Store/Slice/SingleBlog";
 import ReactTimeAgo from "react-time-ago";
 import Loader from "../../Component/Loader";
-import { STATUSES } from "../../Store/Slice/AllBlogsSlice";
+import { fetchBlogs, STATUSES } from "../../Store/Slice/AllBlogsSlice";
 import { MdDelete } from "react-icons/md";
 import { RiFileEditFill } from "react-icons/ri";
 import { FaStar } from "react-icons/fa6";
@@ -38,6 +38,7 @@ const BlogDescription = () => {
 
     if (res.payload.success) navigate("/");
     setIsLoading(false);
+    dispatch(fetchBlogs());
   };
   const fetchData = async () => {
     setIsLoading(true);
