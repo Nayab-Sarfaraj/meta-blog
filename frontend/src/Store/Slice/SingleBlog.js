@@ -62,7 +62,6 @@ export const singleBlogSlice = createSlice({
 });
 
 export const fetchBlog = createAsyncThunk("fetchBlog", async (id) => {
-  console.log("runnig");
   const { data } = await axios.get(`/blog/${id}`);
 
   return data;
@@ -75,12 +74,16 @@ export const deleteBlog = createAsyncThunk("deleteBlog", async (id) => {
 export const editBlog = createAsyncThunk(
   "editBlog",
   async ({ id, formData }) => {
-    const { data } = await axios.put(`/blog/${id}`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return data;
+    try {
+      const { data } = await axios.put(`/blog/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 );
 

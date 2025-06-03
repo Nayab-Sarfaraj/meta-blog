@@ -152,20 +152,29 @@ export const userAuthentictionSlice = createSlice({
 export const registerUser = createAsyncThunk(
   "registerUser",
   async ({ name, email, password }) => {
-    const { data } = await axios.post("/register", {
-      name,
-      email,
-      password,
-    });
+    try {
+      const { data } = await axios.post("/register", {
+        name,
+        email,
+        password,
+      });
 
-    return data;
+      return data;
+    } catch (error) {
+      console.log(error);
+      return error.response.data;
+    }
   }
 );
 export const loginUser = createAsyncThunk(
   "loginUser",
   async ({ password, email }) => {
-    const { data } = await axios.post("/login", { email, password });
-    return data;
+    try {
+      const { data } = await axios.post("/login", { email, password });
+      return data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 );
 export const fetchUserProfile = createAsyncThunk(
@@ -178,29 +187,33 @@ export const fetchUserProfile = createAsyncThunk(
 export const UpdateProfilePicture = createAsyncThunk(
   "UpdateProfilePicture",
   async (formData) => {
-    formData.forEach((element) => {
-      console.log(element);
-    });
-    const { data } = await axios.post("/upload/profilePic", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return data;
+    try {
+      const { data } = await axios.post("/upload/profilePic", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 );
 export const completeProfile = createAsyncThunk(
   "completeProfile",
   async ({ bio, profession, name, contactInfo }) => {
-    console.log(contactInfo);
-    const { data } = await axios.put("/completeProfile", {
-      bio,
-      profession,
-      name,
-      contactInfo,
-    });
-    console.log(data);
-    return data;
+    try {
+      const { data } = await axios.put("/completeProfile", {
+        bio,
+        profession,
+        name,
+        contactInfo,
+      });
+
+      return data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 );
 export const logout = createAsyncThunk("logout", async () => {
@@ -211,11 +224,15 @@ export const logout = createAsyncThunk("logout", async () => {
 export const updatePassword = createAsyncThunk(
   "updatePassword",
   async ({ newPassword, oldPassword }) => {
-    const { data } = await axios.patch("/updatePassword", {
-      newPassword,
-      oldPassword,
-    });
-    return data;
+    try {
+      const { data } = await axios.patch("/updatePassword", {
+        newPassword,
+        oldPassword,
+      });
+      return data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 );
 export const forgotPassword = createAsyncThunk(

@@ -1,16 +1,12 @@
-import React from 'react'
-import { useDispatch, useSelector } from "react-redux"
-import { Outlet } from 'react-router-dom'
-import  Login  from "../pages/Login/Login";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Outlet } from "react-router-dom";
+import Login from "../pages/Login/Login";
 const PrivateScreen = () => {
-    const dispatch = useDispatch()
-    const isAuthenticated = useSelector(state => state.user.isAuthenticated)
-    console.log(isAuthenticated)
-    return (
-        <div>
-            {isAuthenticated ? <Outlet /> : <Login />}
-        </div>
-    )
-}
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
-export default PrivateScreen
+  return <div>{isAuthenticated ? <Outlet /> : <Login />}</div>;
+};
+
+export default PrivateScreen;

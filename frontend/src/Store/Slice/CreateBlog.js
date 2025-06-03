@@ -34,13 +34,17 @@ export const createBlogSlice = createSlice({
 });
 
 export const createBlog = createAsyncThunk("createBlog", async (formData) => {
-  const { data } = await axios.post("/create", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  console.log(data);
-  return data;
+  try {
+    const { data } = await axios.post("/create", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
 });
 
 export default createBlogSlice.reducer;

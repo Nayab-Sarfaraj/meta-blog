@@ -35,7 +35,6 @@ export const blogsSlice = createSlice({
 
 export const fetchBlogs = createAsyncThunk("fetchBlogs", async (page) => {
   try {
-    console.log(page);
     if (page <= 0) page = 1;
     const { data } = await axios.get(`/blogs?page=${page}`);
     return data;

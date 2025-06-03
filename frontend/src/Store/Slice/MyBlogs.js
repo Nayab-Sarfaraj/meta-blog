@@ -35,7 +35,7 @@ export const myBlogSlice = createSlice({
 
 export const fetchMyBlogs = createAsyncThunk("fetchMyBlogs", async () => {
   const { data } = await axios.get("/myBlogs");
-  console.log(data);
+
   return data;
 });
 

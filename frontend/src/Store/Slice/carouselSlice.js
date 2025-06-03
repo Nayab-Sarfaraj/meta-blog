@@ -35,7 +35,7 @@ export const carouselSlice = createSlice({
 
 export const getCarousel = createAsyncThunk("getCarousel", async () => {
   const { data } = await axios.get("/carousel");
-  console.log(data);
+
   return data;
 });
 

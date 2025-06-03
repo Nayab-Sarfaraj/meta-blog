@@ -37,7 +37,7 @@ export const searchBlogs = createAsyncThunk(
   "searchBlogs",
   async (searchInput) => {
     const { data } = await axios.post(`search?searchInput=${searchInput}`);
-    console.log(data);
+
     return data;
   }
 );

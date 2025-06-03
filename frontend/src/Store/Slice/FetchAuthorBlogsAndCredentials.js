@@ -33,10 +33,13 @@ export const authorCredentialsSlice = createSlice({
   },
 });
 
-export const fetchAuthorBlogAndCredentials = createAsyncThunk("fetchAuthorBlogAndCredentials", async (id) => {
-  const { data } = await axios.get(`/author/${id}`);
+export const fetchAuthorBlogAndCredentials = createAsyncThunk(
+  "fetchAuthorBlogAndCredentials",
+  async (id) => {
+    const { data } = await axios.get(`/author/${id}`);
 
-  return data;
-});
+    return data;
+  }
+);
 
 export default authorCredentialsSlice.reducer;

@@ -9,7 +9,15 @@ const register = async (req, res, next) => {
     const { email, password, name } = req.body;
     if (!email || !password || !name)
       return next(new ErrorHandler("all fields are required", 401));
-    const newuser = await User({ email, password, name });
+    const user = await User.findOne({ email });
+    console.log(user);
+    if (user) return next(new ErrorHandler("User already exist", 401));
+    const newuser = await User({
+      email,
+      password,
+      name,
+      avatar: "https://shorturl.at/nOEI9",
+    });
 
     const saveduser = await newuser.save();
     return res.json({ success: true, saveduser });
@@ -28,7 +36,7 @@ const login = async (req, res, next) => {
 
     const isMatching = await bcrypt.compare(password, user.password);
     if (!isMatching)
-      return next(new ErrorHandler("Invalid email or password", 400));
+      return next(new ErrorHandler("Invalid email or password", 401));
 
     const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
       expiresIn: "1w",
@@ -129,10 +137,12 @@ const completeProfile = async (req, res, next) => {
     const id = req.user._id;
     let updatedUser = {};
     if (req.body.contactInfo.length !== 0) {
+      console.log("kk");
       const user = await User.findById(id);
       user.contactInfo = [...req.body.contactInfo];
       if (req.body.bio) user.bio = req.body.bio;
       if (req.body.profession) user.profession = req.body.profession;
+      user.name = req.body.name;
       updatedUser = await user.save();
     } else {
       updatedUser = await User.findByIdAndUpdate(id, req.body, {
