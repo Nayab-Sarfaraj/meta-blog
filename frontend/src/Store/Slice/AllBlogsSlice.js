@@ -36,7 +36,9 @@ export const blogsSlice = createSlice({
 export const fetchBlogs = createAsyncThunk("fetchBlogs", async (page) => {
   try {
     if (page <= 0 || !page) page = 1;
-    const { data } = await axios.get(`${URL}/blogs?page=${page}`);
+    const { data } = await axios.get(
+      `https://blog-website-production-0e09.up.railway.app/api/v1/blogs?page=${page}`
+    );
     return data;
   } catch (error) {
     console.log(error);
