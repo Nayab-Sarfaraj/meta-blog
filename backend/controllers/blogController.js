@@ -188,6 +188,7 @@ const fetchAuthorBlogsAndCredential = async (req, res, next) => {
 };
 const searchBlogs = async (req, res, next) => {
   try {
+    console.log("searching blogs");
     const searchQuery = req.query.searchInput;
     const blogs = await Blog.find({
       $or: [

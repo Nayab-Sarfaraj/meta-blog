@@ -256,56 +256,78 @@ export const updatePassword = createAsyncThunk(
 export const forgotPassword = createAsyncThunk(
   "forgotPassword",
   async (email) => {
-    const { data } = await axios.post(
-      `${URL}/forgotPassword`,
-      { email },
-      { withCredentials: true }
-    );
-    return data;
+
+    try {
+      const { data } = await axios.post(
+        `${URL}/forgotPassword`,
+        { email },
+        { withCredentials: true }
+      );
+      console.log(data);
+      return data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 );
 export const resetPassword = createAsyncThunk(
   "resetPassword",
   async ({ token, password }) => {
     // console.log(token, password);
-    const { data } = await axios.put(
-      `${URL}/resetPassword/${token}`,
-      {
-        password,
-      },
-      { withCredentials: true }
-    );
-    return data;
+    try {
+      const { data } = await axios.put(
+        `${URL}/resetPassword/${token}`,
+        {
+          password,
+        },
+        { withCredentials: true }
+      );
+      return data;
+    } catch (error) {
+      return error.response.data
+    }
   }
 );
 export const increaseLike = createAsyncThunk("increaseLike", async (id) => {
-  const { data } = await axios.post(
-    `https://blog-website-production-0e09.up.railway.app/api/v1/like/${id}`,
-    {
-      withCredentials: true,
-    }
-  );
-  return data;
+  try {
+    const { data } = await axios.post(
+      `${URL}/like/${id}`, {},
+      {
+        withCredentials: true,
+      }
+    );
+    return data;
+  } catch (error) {
+    return error.response.data
+  }
 });
 export const decreaseLike = createAsyncThunk("decreaseLike", async (id) => {
-  const { data } = await axios.post(
-    `https://blog-website-production-0e09.up.railway.app/api/v1/unlike/${id}`,
-    {
-      withCredentials: true,
-    }
-  );
-  // console.log(data);
-  return data;
+  try {
+    const { data } = await axios.post(
+      `${URL}/unlike/${id}`, {},
+      {
+        withCredentials: true,
+      }
+    );
+    // console.log(data);
+    return data;
+  } catch (error) {
+    return error.response.data
+  }
 });
 export const addComment = createAsyncThunk(
   "addComment",
   async ({ comment, id }) => {
-    const { data } = await axios.post(
-      `${URL}/addcomment/${id}`,
-      { comment },
-      { withCredentials: true }
-    );
-    return data;
+    try {
+      const { data } = await axios.post(
+        `${URL}/addcomment/${id}`,
+        { comment },
+        { withCredentials: true }
+      );
+      return data;
+    } catch (error) {
+      return error.response.data
+    }
   }
 );
 export default userAuthentictionSlice.reducer;

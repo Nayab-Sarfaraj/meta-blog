@@ -79,6 +79,7 @@ const logout = async (req, res, next) => {
 
 const forgotPassword = async (req, res, next) => {
   try {
+
     const { email } = req.body;
     const user = await User.findOne({ email });
 
@@ -97,6 +98,7 @@ const resetPassword = async (req, res, next) => {
     const token = req.params.token;
     const { password } = req.body;
     // console.log(token);
+    if (!token || !password) return next(new ErrorHandler("Token and password are required", 401));
     const { userId } = await jwt.verify(token, process.env.SECRET_KEY);
     const user = await User.findById(userId);
     if (!user) return next(new ErrorHandler("Token expired", 401));

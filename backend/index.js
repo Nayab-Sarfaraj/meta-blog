@@ -7,10 +7,18 @@ const cors = require("cors");
 connectToDb();
 app.use(express.json());
 app.use(cookieParser());
+const allowedOrigins = ['http://localhost:3000', 'https://yourdomain.com', 'https://blog-website-nine-eta.vercel.app/'];
+
 app.use(
   cors({
     credentials: true,
-    origin: ["https://blog-website-nine-eta.vercel.app"],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
   })
 );
 app.use(express.urlencoded({ extended: false }));

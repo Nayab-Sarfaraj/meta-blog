@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
     dispatch(fetchBlogs());
     dispatch(fetchUserProfile());
-  
+
   }, [blog]);
   return (
     <div>

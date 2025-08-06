@@ -8,7 +8,7 @@ const {
   updatePassword,
   uploadProfilePhoto,
   completeProfile,
-  
+
 } = require("../controllers/userControllers");
 const isAuthenticated = require("../middleware/auth");
 const upload = require("../middleware/multer");

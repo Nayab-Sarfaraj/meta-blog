@@ -56,8 +56,16 @@ const BlogDescription = () => {
 
   const like = async () => {
     setIsLiked(true);
-    dispatch(increaseLike(blog?._id));
-    setLikeCount((count) => count + 1);
+    const res = await dispatch(increaseLike(blog?._id));
+    if (res.payload.success) {
+
+      setLikeCount((count) => count + 1);
+    } else {
+      toast.error(res.payload.message);
+
+
+    }
+
   };
   const dislike = async () => {
     dispatch(decreaseLike(blog?._id));
@@ -68,11 +76,17 @@ const BlogDescription = () => {
     e.preventDefault();
 
     setIsLoading(true);
-    await dispatch(addComment({ comment, id: blog?._id }));
-    await fetchData();
+    const res = await dispatch(addComment({ comment, id: blog?._id }));
+    if (res.payload.success) {
+      await fetchData();
+      toast.success("comment added");
+    } else {
+      toast.error(res.payload.message || 'Something went wrong');
+    }
+
     setIsLoading(false);
     setComment("");
-    toast.success("comment added");
+
   };
   return (
     <>

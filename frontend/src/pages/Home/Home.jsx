@@ -8,7 +8,7 @@ import { getCarousel } from "../../Store/Slice/carouselSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const blogs = useSelector((state) => state.blogs.data.blogs);
+  const blogs = useSelector((state) => state.blogs?.data?.blogs);
 
   const carouselData = useSelector((state) => state.carousel.data.blogs);
   useEffect(() => {

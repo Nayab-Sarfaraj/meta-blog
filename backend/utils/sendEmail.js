@@ -3,14 +3,14 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sendMail = async (email, userId) => {
   try {
-    // console.log("rn");
+
 
     const transporter = nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
+      host: "gmail",
       port: 2525,
       auth: {
-        user: "8e21ac06e6c02b",
-        pass: "e81347c5ff890f",
+        user: process.env.send_Email_User,
+        pass: process.env.send_Email_Password,
       },
     });
 
