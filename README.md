@@ -81,21 +81,9 @@ flowchart LR
   M --> A[Client Output]
 ```
 
-### Important: No AI/video pipeline in this codebase
-There is no FFmpeg/video rendering, no AI provider integration, and no workflow runner. Media handling is limited to **image uploads to Cloudinary**.
-
 ---
 
-## 5. Inngest Workflow Design
-
-No Inngest step functions or Inngest workflow code exists in this repository.
-
-- Searches for `inngest`, `step function`, and related workflow keywords returned **no matches**.
-- There are also **no background job/queue frameworks** (e.g., Bull/Agenda/Cron) detected in the backend source.
-
----
-
-## 6. API Endpoints
+## 5. API Endpoints
 
 Base URL: `/api/v1`  
 Auth method: HTTP-only cookie named `token` (set by `POST /login`)
@@ -142,7 +130,7 @@ Error format (global):
 
 ---
 
-## 7. Environment Variables
+## 6. Environment Variables
 
 The backend loads environment variables via `dotenv` (`backend/index.js`).
 
@@ -174,7 +162,7 @@ send_Email_Password=<your-gmail-app-password>
 
 ---
 
-## 8. Project Structure
+## 7. Project Structure
 
 Repository root contains both `backend/` and `frontend/`.
 
@@ -199,7 +187,7 @@ Deployment config:
 
 ---
 
-## 9. Setup & Local Development
+## 8. Setup & Local Development
 
 ### Prerequisites
 - Node.js + npm
@@ -233,7 +221,7 @@ No background workers or job processors exist in this backend codebase.
 
 ---
 
-## 10. How It Works (Detailed Pipeline)
+## 9. How It Works (Detailed Pipeline)
 
 ### Example pipeline: Create a blog post with a cover image
 
@@ -268,28 +256,4 @@ No background workers or job processors exist in this backend codebase.
 5. Returns updated documents (or `{}` if already liked)
 
 ---
-
-## 11. Deployment Notes (if detectable)
-
-- `backend/vercel.json` uses Vercel Node routing to forward all routes to `index.js`.
-- `backend/index.js` CORS allows origins including:
-  - `http://localhost:3000`
-  - `https://yourdomain.com`
-  - `https://blog-website-nine-eta.vercel.app/`
-- JWT is stored in a cookie with:
-  - `secure: true`
-  - `sameSite: "None"`
-  - `httpOnly: true`
-
-This strongly assumes **HTTPS** in the environment where the frontend runs (because `secure: true`).
-
----
-
-## 12. Future Improvements (optional)
-
-- Move hardcoded Cloudinary credentials in `backend/utils/cloudinary.js` to environment variables.
-- Avoid hardcoded reset-password email URLs (currently uses `http://localhost:3000/...` in `backend/utils/sendEmail.js`).
-- Add request validation to prevent runtime errors (e.g., `completeProfile` assumes `req.body.contactInfo.length` exists).
-- Add rate limiting and stricter error/status handling across controllers.
-- Implement CSRF protections for cookie-based auth if exposing the API broadly.
 
