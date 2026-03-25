@@ -1,5 +1,6 @@
 const Blog = require("../model/blogModel");
 const User = require("../model/userModel");
+const blogService = require("../services/blog.service");
 const uploadOnCloudinary = require("../utils/cloudinary");
 const ErrorHandler = require("../utils/errorhandler");
 const updateBlog = async (req, res, next) => {
@@ -81,28 +82,18 @@ const getAllBlogs = async (req, res, next) => {
 
 const createBlog = async (req, res, next) => {
   try {
-    // console.log(req.body);
+
     const { description, title, category } = req.body;
-    // console.log(req.file);
+  
     const filePath = req.file?.path;
     if (!description || !title || !category || !filePath)
       return next(new ErrorHandler("All fields are required", 500));
 
-    const coverImage = await uploadOnCloudinary(filePath);
-    // console.log(coverImage);
-    const newBlog = new Blog({
-      description,
-      title,
-      author: req.user._id,
-      coverImage: coverImage.url,
-      category,
-    });
-
-    const savedBlog = await newBlog.save();
+    const blog = await blogService.createBlog({description,title,category,filePath,author:req.user._id})
 
     return res.json({
       success: true,
-      savedBlog,
+      blog,
     });
   } catch (error) {
     // console.log(error);
@@ -188,7 +179,7 @@ const fetchAuthorBlogsAndCredential = async (req, res, next) => {
 };
 const searchBlogs = async (req, res, next) => {
   try {
-    console.log("searching blogs");
+    // console.log("searching blogs");
     const searchQuery = req.query.searchInput;
     const blogs = await Blog.find({
       $or: [
