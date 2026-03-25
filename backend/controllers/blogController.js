@@ -86,8 +86,6 @@ const createBlog = async (req, res, next) => {
     const { description, title, category } = req.body;
   
     const filePath = req.file?.path;
-    if (!description || !title || !category || !filePath)
-      return next(new ErrorHandler("All fields are required", 500));
 
     const blog = await blogService.createBlog({description,title,category,filePath,author:req.user._id})
 
