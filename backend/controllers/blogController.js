@@ -1,6 +1,8 @@
+const { StatusCodes } = require("http-status-codes");
 const Blog = require("../model/blogModel");
 const User = require("../model/userModel");
 const blogService = require("../services/blog.service");
+const { SuccessResponse } = require("../utils/apiResponse");
 const uploadOnCloudinary = require("../utils/cloudinary");
 const ErrorHandler = require("../utils/errorhandler");
 const updateBlog = async (req, res, next) => {
@@ -89,10 +91,12 @@ const createBlog = async (req, res, next) => {
 
     const blog = await blogService.createBlog({description,title,category,filePath,author:req.user._id})
 
-    return res.json({
-      success: true,
-      blog,
-    });
+    SuccessResponse(res,{
+      message:"Blog created successfully",
+      data:blog,
+      success:true,
+      statusCode:StatusCodes.CREATED
+      })
   } catch (error) {
     // console.log(error);
     return next(new ErrorHandler(error.message, 500));
