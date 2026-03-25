@@ -13,7 +13,7 @@ const ForgotPassword = () => {
     e.preventDefault();
     setIsLoading(true);
     const res = await dispatch(forgotPassword(email));
-    console.log(res);
+
     if (res.payload.success) {
       setIsLoading(false);
       toast.success(res.payload.message);

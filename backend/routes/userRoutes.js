@@ -13,13 +13,16 @@ const {
 const isAuthenticated = require("../middleware/auth");
 const upload = require("../middleware/multer");
 const router = require("express").Router();
+const zodValidator = require("../middleware/validateZod")
+const {registerSchema, loginSchema} = require("../validator/ user.schema")
+
 router
   .route("/upload/profilePic")
   .post(isAuthenticated, upload.single("profilePic"), uploadProfilePhoto);
 
 router.route("/resetPassword/:token").put(resetPassword);
-router.route("/register").post(register);
-router.route("/login").post(login);
+router.route("/register").post(zodValidator(registerSchema),register);
+router.route("/login").post(zodValidator(loginSchema),login);
 router.route("/me").get(isAuthenticated, getUserProfile);
 router.route("/logout").get(logout);
 router.route("/forgotPassword").post(forgotPassword);

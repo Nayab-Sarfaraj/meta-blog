@@ -44,7 +44,7 @@ export const fetchBlogs = createAsyncThunk("fetchBlogs", async (page) => {
     );
     return data;
   } catch (error) {
-    console.log(error);
+    return error.response.data;
   }
 });
 

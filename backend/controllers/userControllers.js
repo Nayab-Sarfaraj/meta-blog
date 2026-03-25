@@ -6,12 +6,7 @@ const sendMail = require("../utils/sendEmail");
 const uploadOnCloudinary = require("../utils/cloudinary");
 const UserService = require("../services/user.service");
 const register = async (req, res, next) => {
-  try {
-    const { email, password, name } = req.body;
-    
-    if (!email || !password || !name)
-      return next(new ErrorHandler("all fields are required", 401));
-     
+  try {     
       const user = await UserService.createUser(req.body)
       return res.json({ success: true, user });
   } catch (error) {
@@ -20,13 +15,9 @@ const register = async (req, res, next) => {
   }
 };
 const login = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password)
-      return next(new ErrorHandler("all fields are required", 401));
-    
+  try { 
     const {user,token} = await UserService.loginUser(req.body)
-  console.log({user,token})
+
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Always true for HTTPS (Railway uses HTTPS)
