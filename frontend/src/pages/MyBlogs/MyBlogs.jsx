@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { BsInstagram } from 'react-icons/bs'
-import { FaFacebook } from 'react-icons/fa6'
 import { TiSocialTwitter, TiSocialYoutube, TiSocialFacebook, TiSocialInstagram } from 'react-icons/ti'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Footer from '../../Component/Footer'
 import Header from '../../Component/Header'
 import Loader from '../../Component/Loader'
@@ -12,7 +10,6 @@ import { fetchMyBlogs } from '../../Store/Slice/MyBlogs'
 
 const MyBlogs = () => {
     const dispatch = useDispatch()
-    const params = useParams()
     const [isLoading, setIsLoading] = useState(true)
 
     const blogs = useSelector(state => state.myBlogs.data.myBlogs)
@@ -21,6 +18,7 @@ const MyBlogs = () => {
         setIsLoading(true)
         dispatch(fetchMyBlogs())
         setIsLoading(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     const Icons = [{ icon: TiSocialFacebook }, { icon: TiSocialInstagram }, { icon: TiSocialTwitter }, { icon: TiSocialYoutube }]
     return (
@@ -33,7 +31,7 @@ const MyBlogs = () => {
                     isLoading ? <Loader /> : <div className='mt-5 '>
                         <div className='dark:bg-[#242535] bg-[#F6F6F7] w-full flex flex-col items-center justify-center md:p-16 p-7 rounded-xl space-y-5'>
                             <div className='flex  items-center space-x-3'>
-                                <img src={author?.avatar} className='h-14 rounded-full' />
+                                <img src={author?.avatar} className='h-14 rounded-full' alt={author?.name} />
                                 <div><div className='dark:text-white text-xl capitalize'>{author?.name}</div>
                                     <div className='text-[#BABABF] text-sm capitalize'>{author?.profession}</div>
                                 </div>

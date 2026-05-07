@@ -17,7 +17,7 @@ const Blogs = () => {
     if (blogs?.length < 6 && page < pageNo) return;
 
     setPage(pageNo);
-    const res = await dispatch(fetchBlogs(pageNo));
+    await dispatch(fetchBlogs(pageNo));
   };
   return (
     <>

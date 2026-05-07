@@ -44,6 +44,7 @@ const BlogDescription = () => {
   };
   useEffect(() => {
     fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params, id]);
   useEffect(() => {
     if (blog && blog.likes !== 0) {
@@ -105,7 +106,7 @@ const BlogDescription = () => {
             <div className="flex items-center space-x-5 my-3">
               <Link to={`/author/${blog?.author._id}`}>
                 <div className="flex items-center space-x-3">
-                  <img src={blog?.author.avatar} className="h-8 rounded-full" />
+                  <img src={blog?.author.avatar} className="h-8 rounded-full" alt={blog?.author.name} />
                   <div className="text-[#696A75] capitalize text-lg">
                     {blog?.author.name}
                   </div>
@@ -184,6 +185,7 @@ const BlogDescription = () => {
                         <img
                           src={comment.userId.avatar}
                           className="h-8 rounded-full"
+                          alt={comment.userId.name}
                         />
 
                         <div className="text-[#696A75] text-lg capitalize italic">

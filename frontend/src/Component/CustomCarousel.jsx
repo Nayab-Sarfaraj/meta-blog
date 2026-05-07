@@ -13,7 +13,7 @@ const CustomCarousel = ({ data }) => {
       {data?.map((item, idx) => (
         <Link to={`/blog/${item._id}`} key={idx}>
           <div className="h-full w-full overflow-hidden">
-            <img src={item?.coverImage} className="w-full h-auto rounded-2xl" />
+            <img src={item?.coverImage} className="w-full h-auto rounded-2xl" alt={item?.title || "Blog cover"} />
             <div className="absolute bottom-10 text-start md:w-[50%] w-full left-5 md:space-y-3 space-y-2">
               <button
                 className="bg-[#4B6BFB] text-white w-auto px-2  rounded-md capitalize

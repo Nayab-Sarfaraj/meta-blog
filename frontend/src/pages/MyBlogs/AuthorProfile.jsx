@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { BsInstagram } from "react-icons/bs"
-import { FaFacebook } from "react-icons/fa"
 import { TiSocialFacebook, TiSocialInstagram, TiSocialTwitter, TiSocialYoutube } from "react-icons/ti"
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
@@ -24,6 +22,7 @@ const AuthorProfile = () => {
     setIsLoading(false)
     if (author)
       setIsLoading(false)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params])
   return (
     <>
@@ -35,7 +34,7 @@ const AuthorProfile = () => {
           isLoading ? <Loader /> : <div className='mt-5 '>
             <div className='dark:bg-[#242535] bg-[#F6F6F7] w-full flex flex-col items-center justify-center md:p-16 p-7 rounded-xl space-y-5'>
               <div className='flex  items-center space-x-3'>
-                <img src={author?.avatar} className='h-14 rounded-full' />
+                <img src={author?.avatar} className='h-14 rounded-full' alt={author?.name} />
                 <div><div className='dark:text-white text-xl capitalize'>{author?.name}</div>
                   <div className='text-[#BABABF] text-sm capitalize'>{author?.profession}</div>
                 </div>

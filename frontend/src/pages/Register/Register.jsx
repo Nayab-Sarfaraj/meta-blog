@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Footer from "../../Component/Footer";
 import Header from "../../Component/Header";
-import { FaGoogle } from "react-icons/fa6";
 import { useDispatch } from "react-redux";
 import { registerUser } from "../../Store/Slice/UserAuthentication";
 import { Link, useNavigate } from "react-router-dom";

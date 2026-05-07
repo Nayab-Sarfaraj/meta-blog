@@ -13,6 +13,7 @@ const Home = () => {
   const carouselData = useSelector((state) => state.carousel.data.blogs);
   useEffect(() => {
     dispatch(getCarousel());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

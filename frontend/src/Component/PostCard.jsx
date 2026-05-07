@@ -9,7 +9,7 @@ const PostCard = ({ blog }) => {
         <img
           src={blog.coverImage}
           className="w-full h-auto"
-          alt="cover image"
+          alt={blog.title}
         />
         <div className="space-y-3">
           <p className="text-[#4B6BFB] text-sm">{blog.category}</p>
@@ -18,7 +18,7 @@ const PostCard = ({ blog }) => {
           </h3>
           <div className="flex flex-row items-center justify-between ">
             <div className="flex items-center space-x-3 justify-center">
-              <img src={blog.author.avatar} className="h-7 rounded-full" />
+              <img src={blog.author.avatar} className="h-7 rounded-full" alt={blog.author.name} />
               <div className="text-[#97989F] text-xl capitalize">
                 {blog.author.name}{" "}
               </div>

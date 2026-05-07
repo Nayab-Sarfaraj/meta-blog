@@ -3,7 +3,6 @@ import Footer from "../../Component/Footer";
 import Header from "../../Component/Header";
 import DescriptionInput from "../../Component/DescriptionInput";
 import { CATEGORY } from "../../constants/constant";
-import { createBlog } from "../../Store/Slice/CreateBlog";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -43,6 +42,7 @@ const EditBlog = () => {
   useEffect(() => {
     if (user._id.toString() !== blog?.author._id.toString()) navigate("/");
     if (blog) setIsLoading(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blog, user]);
   return (
     <>

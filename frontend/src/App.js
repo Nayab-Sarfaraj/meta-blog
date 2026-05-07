@@ -25,7 +25,7 @@ import Search from "./pages/Search/Search";
 function App() {
   const dispatch = useDispatch();
   const theme = useSelector((state) => state.theme);
-  const blog = useSelector((state) => state.blog);
+  
   useEffect(() => {
     document.querySelector("html").classList.remove("dark", "light");
     document.querySelector("html").classList.add(theme);
@@ -33,8 +33,8 @@ function App() {
   useEffect(() => {
     dispatch(fetchBlogs());
     dispatch(fetchUserProfile());
-
-  }, [blog]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div>
       <BrowserRouter>
