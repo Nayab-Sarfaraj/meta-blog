@@ -33,7 +33,28 @@ app.use(
 
 app.use(express.urlencoded({ extended: false }));
 
-// Also ensure DB is connected on each request (safe for Vercel serverless cold starts)
+// Debug route - before DB middleware to always respond
+app.get("/health", async (req, res) => {
+  const mongoose = require("mongoose");
+  try {
+    await connectToDb();
+    res.json({
+      dbState: mongoose.connection.readyState,
+      MONGO_USERNAME: process.env.MONGO_USERNAME ? "set" : "NOT SET",
+      MONGO_PASSWORD: process.env.MONGO_PASSWORD ? "set" : "NOT SET",
+      connected: mongoose.connection.readyState === 1,
+    });
+  } catch (err) {
+    res.json({
+      dbState: mongoose.connection.readyState,
+      MONGO_USERNAME: process.env.MONGO_USERNAME ? "set" : "NOT SET",
+      MONGO_PASSWORD: process.env.MONGO_PASSWORD ? "set" : "NOT SET",
+      error: err.message,
+    });
+  }
+});
+
+// Ensure DB is connected on each request (safe for Vercel serverless cold starts)
 app.use(async (req, res, next) => {
   try {
     await connectToDb();
@@ -44,17 +65,6 @@ app.use(async (req, res, next) => {
 });
 
 app.get("/", (req, res) => res.send("ok"));
-
-// Debug route - remove after fixing
-app.get("/health", async (req, res) => {
-  const mongoose = require("mongoose");
-  res.json({
-    dbState: mongoose.connection.readyState,
-    // 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
-    MONGO_USERNAME: process.env.MONGO_USERNAME ? "set" : "NOT SET",
-    MONGO_PASSWORD: process.env.MONGO_PASSWORD ? "set" : "NOT SET",
-  });
-});
 
 const userRouter = require("./routes/userRoutes");
 app.use("/api/v1", userRouter);
