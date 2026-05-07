@@ -58,6 +58,5 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.4.10"
-  },
-  "proxy": "https://blog-api-puce-eta.vercel.app/api/v1"
+  }
 }
