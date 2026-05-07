@@ -166,7 +166,6 @@ export const registerUser = createAsyncThunk(
 
       return data;
     } catch (error) {
-      console.log(error);
       return error.response.data;
     }
   }
@@ -263,7 +262,6 @@ export const forgotPassword = createAsyncThunk(
         { email },
         { withCredentials: true }
       );
-      console.log(data);
       return data;
     } catch (error) {
       return error.response.data;

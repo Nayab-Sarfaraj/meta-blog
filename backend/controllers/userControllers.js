@@ -4,43 +4,20 @@ const jwt = require("jsonwebtoken");
 const ErrorHandler = require("../utils/errorhandler");
 const sendMail = require("../utils/sendEmail");
 const uploadOnCloudinary = require("../utils/cloudinary");
+const UserService = require("../services/user.service");
 const register = async (req, res, next) => {
-  try {
-    const { email, password, name } = req.body;
-    if (!email || !password || !name)
-      return next(new ErrorHandler("all fields are required", 401));
-    const user = await User.findOne({ email });
-    // console.log(user);
-    if (user) return next(new ErrorHandler("User already exist", 401));
-    const newuser = await User({
-      email,
-      password,
-      name,
-      avatar: "https://shorturl.at/nOEI9",
-    });
-
-    const saveduser = await newuser.save();
-    return res.json({ success: true, saveduser });
+  try {     
+      const user = await UserService.createUser(req.body)
+      return res.json({ success: true, user });
   } catch (error) {
     // console.log(error);
     return next(new ErrorHandler(error.message, 500));
   }
 };
 const login = async (req, res, next) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password)
-      return next(new ErrorHandler("all fields are required", 401));
-    const user = await User.findOne({ email });
-    if (!user) return next(new ErrorHandler("Invalid email or password", 401));
+  try { 
+    const {user,token} = await UserService.loginUser(req.body)
 
-    const isMatching = await bcrypt.compare(password, user.password);
-    if (!isMatching)
-      return next(new ErrorHandler("Invalid email or password", 401));
-
-    const token = jwt.sign({ id: user._id }, process.env.SECRET_KEY, {
-      expiresIn: "1w",
-    });
     res.cookie("token", token, {
       httpOnly: true,
       secure: true, // Always true for HTTPS (Railway uses HTTPS)
