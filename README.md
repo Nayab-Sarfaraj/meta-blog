@@ -1,11 +1,9 @@
-# Auto AI Shorts Backend (Express API)
+# Meta Blog — Full Stack Blog Platform
 
 ![Node.js](https://img.shields.io/badge/Node.js-Express/Mongoose-339933?style=flat&logo=node.js)
 ![License](https://img.shields.io/badge/license-ISC-blue.svg)
 ![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=flat&logo=mongodb)
 ![Vercel](https://img.shields.io/badge/Deploy-Vercel-black?style=flat&logo=vercel)
-
-> **Note:** Despite the repository name/description, the current backend codebase implements a **blog + user authentication API** (JWT cookie auth, CRUD blogs, likes/comments, and Cloudinary image uploads). There is **no AI short/video generation** code and **no Inngest workflows** detected in this repository.
 
 ---
 
