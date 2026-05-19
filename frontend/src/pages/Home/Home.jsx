@@ -22,7 +22,7 @@ const Home = () => {
         <Header />
         <CustomCarousel data={carouselData} />
         <div className="text-xl mt-10 font-semibold">Latest Posts</div>
-        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 mt-4">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-6 mt-4 items-stretch">
           {blogs?.map((blog) => (
             <PostCard blog={blog} key={blog._id} />
           ))}

@@ -1,11 +1,9 @@
 import React from 'react'
-import { BiLoader } from "react-icons/bi";
 
 const Loader = () => {
     return (
-        <div className='flex w-full items-center justify-center'>
-
-            <BiLoader size={100} className='animate-spin' />
+        <div className='flex w-full items-center justify-center py-20'>
+            <div className='w-10 h-10 rounded-full border-4 border-[#E8E8EA] dark:border-[#242535] border-t-[#4B6BFB] animate-spin' />
         </div>
     )
 }

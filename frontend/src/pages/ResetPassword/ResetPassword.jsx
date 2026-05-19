@@ -7,16 +7,22 @@ import { resetPassword } from "../../Store/Slice/UserAuthentication";
 import { STATUSES } from "../../Store/Slice/AllBlogsSlice";
 import Loader from "../../Component/Loader";
 import toast from "react-hot-toast";
+import { BiLoader } from "react-icons/bi";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
   const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const status = useSelector((state) => state.user.status);
   const navigate = useNavigate();
-  const handleToken = async () => {
+
+  const handleToken = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
     const res = await dispatch(resetPassword({ token, password }));
+    setIsLoading(false);
     if (res.payload.success) {
       toast.success("Password reset successfully");
       navigate("/login");
@@ -30,22 +36,25 @@ const ResetPassword = () => {
         {status === STATUSES.LOADING ? (
           <Loader />
         ) : (
-          <form
-            className="flex items-center justify-center flex-col space-y-5"
-            onSubmit={handleToken}
-          >
-            <input
-              placeholder="Enter new password"
-              className="w-full dark:bg-[#181A2A] dark:text-white text-lg  outline-none dark:border-[#242535] border-2 px-5 py-2
-                    border-[#E8E8EA]"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              type="password"
-            />
-            <button className="bg-[#4B6BFB] text-white text-lg px-10 py-1 self-start rounded-lg">
-              Submit
-            </button>
-          </form>
+          <div className="flex flex-col space-y-4 mt-10 md:w-[520px] w-full mx-auto">
+            <h1 className="text-3xl font-semibold dark:text-white text-[#181A2A]">Reset Password</h1>
+            <form onSubmit={handleToken} className="flex flex-col space-y-4">
+              <input
+                placeholder="Enter new password"
+                className="w-full dark:bg-[#181A2A] dark:text-white text-lg outline-none dark:border-[#242535] border-2 px-5 py-3 border-[#E8E8EA] rounded-lg"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+              />
+              <button
+                type="submit"
+                className="bg-[#4B6BFB] text-white text-lg px-10 py-2 self-start rounded-lg flex items-center gap-2"
+              >
+                Submit
+                {isLoading && <BiLoader className="animate-spin" />}
+              </button>
+            </form>
+          </div>
         )}
       </div>
       <Footer />

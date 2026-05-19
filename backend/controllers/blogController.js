@@ -45,7 +45,7 @@ const deleteBlog = async (req, res, next) => {
 };
 const getMyBlog = async (req, res, next) => {
   try {
-    const myBlogs = await Blog.find({ author: req.user._id });
+    const myBlogs = await Blog.find({ author: req.user._id }).populate("author");
     return res.json({ success: true, myBlogs });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -163,7 +163,13 @@ const addComment = async (req, res, next) => {
       blog.comments.push({ userId, comment });
     }
 
-    const savedBlog = await blog.save();
+    await blog.save();
+
+    // Re-fetch with full population so the response has name/avatar on every comment
+    const savedBlog = await Blog.findById(id)
+      .populate("author")
+      .populate({ path: "comments.userId", select: "name avatar" });
+
     return res.status(200).json({ success: true, blog: savedBlog });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));

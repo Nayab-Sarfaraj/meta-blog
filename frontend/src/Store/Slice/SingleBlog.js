@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { URL } from "../../constants/constant";
+import { addComment } from "./UserAuthentication";
 
 const STATUSES = {
   LOADING: "loading",
@@ -58,6 +59,13 @@ export const singleBlogSlice = createSlice({
       })
       .addCase(editBlog.rejected, (state, action) => {
         state.status = STATUSES.ERROR;
+      })
+      // When a comment is posted, the API returns the full updated blog.
+      // Update state directly so BlogDescription doesn't need to refetch.
+      .addCase(addComment.fulfilled, (state, action) => {
+        if (action.payload?.blog) {
+          state.data = { ...state.data, blog: action.payload.blog };
+        }
       });
   },
 });
@@ -68,11 +76,14 @@ export const fetchBlog = createAsyncThunk("fetchBlog", async (id) => {
   return data;
 });
 export const deleteBlog = createAsyncThunk("deleteBlog", async (id) => {
-  const { data } = await axios.delete(
-    `${URL}/blog/${id}`
-  );
-
-  return data;
+  try {
+    const { data } = await axios.delete(`${URL}/blog/${id}`, {
+      withCredentials: true,
+    });
+    return data;
+  } catch (error) {
+    return error.response.data;
+  }
 });
 export const editBlog = createAsyncThunk(
   "editBlog",

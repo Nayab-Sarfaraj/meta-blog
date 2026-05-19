@@ -16,11 +16,11 @@ const Login = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const status = useSelector((state) => state.user.status);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     const res = await dispatch(loginUser({ email, password }));
-
     setIsLoading(false);
     if (res.payload.success) {
       toast.success("Logged in successfully");
@@ -35,38 +35,36 @@ const Login = () => {
         {status === STATUSES.LOADING ? (
           <Loader />
         ) : (
-          <div className="flex flex-col items-center space-y-5  justify-center mt-10 ">
-            <h1 className="text-2xl font-semibold">Login</h1>
+          <div className="flex flex-col space-y-4 mt-10 md:w-[520px] w-full mx-auto">
+            <h1 className="text-3xl font-semibold dark:text-white text-[#181A2A]">Login</h1>
             <input
               placeholder="Enter email"
-              className="w-full dark:bg-[#181A2A] dark:text-white text-lg  outline-none dark:border-[#242535] border-2 px-5 py-2
-                    border-[#E8E8EA]"
+              className="w-full dark:bg-[#181A2A] dark:text-white text-lg outline-none dark:border-[#242535] border-2 px-5 py-3 border-[#E8E8EA] rounded-lg"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              type="text"
+              type="email"
             />
             <input
               placeholder="Enter password"
-              className="w-full dark:bg-[#181A2A] dark:text-white text-lg  outline-none dark:border-[#242535] border-2 px-5 py-2
-                    border-[#E8E8EA]"
+              className="w-full dark:bg-[#181A2A] dark:text-white text-lg outline-none dark:border-[#242535] border-2 px-5 py-3 border-[#E8E8EA] rounded-lg"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
             />
             <button
-              className="bg-[#4B6BFB] text-white text-lg px-10 py-1 self-start rounded-lg"
+              className="bg-[#4B6BFB] text-white text-lg px-10 py-2 self-start rounded-lg flex items-center gap-2"
               onClick={handleSubmit}
             >
               Submit
               {isLoading && <BiLoader className="animate-spin" />}
             </button>
-
-            <div className="underline text-[#4B6BFB] italic self-start">
-              <Link to={"/register"}>New User? Register Now</Link>
-            </div>
-
-            <div className="underline text-[#4B6BFB] italic self-start">
-              <Link to={"/forgotPassword"}>Forgot password</Link>
+            <div className="border-t border-[#E8E8EA] dark:border-[#242535] pt-4 flex flex-col space-y-2">
+              <div className="underline text-[#4B6BFB] italic">
+                <Link to="/register">New User? Register Now</Link>
+              </div>
+              <div className="underline text-[#4B6BFB] italic">
+                <Link to="/forgotPassword">Forgot password</Link>
+              </div>
             </div>
           </div>
         )}
