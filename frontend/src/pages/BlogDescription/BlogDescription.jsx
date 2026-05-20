@@ -126,7 +126,7 @@ const BlogDescription = () => {
 
               {/* Edit / delete / like */}
               <div className="flex items-center space-x-4">
-                {user?._id.toString() === blog?.author._id.toString() && (
+                {user && blog?.author && String(user._id) === String(blog.author._id) && (
                   <>
                     <Link to={`/blog/edit/${blog?._id}`}>
                       <RiFileEditFill size={22} className="text-[#4B6BFB]" />

@@ -7,6 +7,12 @@
 
 ---
 
+## Demo
+
+[![Meta Blog Demo](assets/demo-thumbnail.png)](https://youtu.be/NsG-XVbRKjQ)
+
+---
+
 ## 1. Project Overview
 
 This backend provides a REST API for a web application that supports:
