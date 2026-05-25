@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { logger } = require("../utils/logger");
 
 const uri = `mongodb+srv://${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}@cluster0.z75tj.mongodb.net/test`;
 
@@ -10,11 +11,11 @@ const connectToDb = async () => {
   try {
     await mongoose.connect(uri);
     isConnected = true;
-    console.log("successfully connected to the database");
+    logger.info("successfully connected to the database");
   } catch (err) {
     isConnected = false;
-    console.log("error while connecting with the database");
-    console.log(err);
+    logger.error("error while connecting with the database");
+    logger.error(err);
     throw err;
   }
 };

@@ -5,6 +5,8 @@ const blogService = require("../services/blog.service");
 const { SuccessResponse } = require("../utils/apiResponse");
 const uploadOnCloudinary = require("../utils/cloudinary");
 const ErrorHandler = require("../utils/errorhandler");
+const { logger } = require("../utils/logger");
+
 const updateBlog = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -13,7 +15,7 @@ const updateBlog = async (req, res, next) => {
     if (!blog) return next(new ErrorHandler("blog not found", 404));
     let url = "";
     if (req.file?.path) {
-      // console.log("hsa");
+      
       const filePath = req?.file?.path;
       url = await uploadOnCloudinary(filePath);
     }
@@ -58,7 +60,7 @@ const getSingleBlog = async (req, res, next) => {
     const blog = await Blog.findById(id)
       .populate("author")
       .populate({ path: "comments.userId", select: "name avatar" });
-    // console.log(blog);
+
     if (!blog) return next(new ErrorHandler("Blog not found", 404));
     return res.json({ success: true, blog });
   } catch (error) {
@@ -75,7 +77,7 @@ const getAllBlogs = async (req, res, next) => {
       .skip(toBeSkipped)
       .sort({ createdAt: -1 })
       .populate("author");
-    // console.log(blogs);
+
     return res.json({ success: true, blogs });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -91,6 +93,8 @@ const createBlog = async (req, res, next) => {
 
     const blog = await blogService.createBlog({description,title,category,filePath,author:req.user._id})
 
+    logger.info({ blogId: blog._id, author: req.user._id }, "New blog post created");
+
     SuccessResponse(res,{
       message:"Blog created successfully",
       data:blog,
@@ -98,7 +102,7 @@ const createBlog = async (req, res, next) => {
       statusCode:StatusCodes.CREATED
       })
   } catch (error) {
-    // console.log(error);
+
     return next(new ErrorHandler(error.message, 500));
   }
 };
@@ -187,7 +191,7 @@ const fetchAuthorBlogsAndCredential = async (req, res, next) => {
 };
 const searchBlogs = async (req, res, next) => {
   try {
-    // console.log("searching blogs");
+
     const searchQuery = req.query.searchInput;
     const blogs = await Blog.find({
       $or: [

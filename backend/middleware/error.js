@@ -5,7 +5,11 @@ module.exports = (err, req, res, next) => {
 
   const statusCode = err.status || 500;
   const message = err.message || "Internal Server Error";
-  
+  logger.error({
+    statusCode,
+    message,
+    error: process.env.NODE_ENV === "development" ? err : null
+  })
   ErrorResponse(res,{
     message,
     statusCode,

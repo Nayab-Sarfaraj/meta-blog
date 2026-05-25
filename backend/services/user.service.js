@@ -3,6 +3,7 @@ const ErrorHandler = require("../utils/errorhandler");
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
+const { logger } = require("../utils/logger");
 
 class UserService {
 
@@ -15,17 +16,17 @@ class UserService {
         if (user) throw new ErrorHandler("User already exist", 401);
 
         const savedUser = await this.userRepository.create(data);
+        logger.info({ email: data.email }, "New user registered");
         return savedUser;
     }
 
     async loginUser(data){
     
        const user = await this.userRepository.findByEmail(data.email);
-       console.log(user)
+     
            if (!user) return new ErrorHandler("Invalid email or password", 401)
        
            const isMatching = await bcrypt.compare(data.password, user.password);
-           console.log(isMatching)
 
            if (!isMatching)
               throw new ErrorHandler("Invalid email or password", 401); 
@@ -34,6 +35,7 @@ class UserService {
                 expiresIn: "1w",
             });
         
+           logger.info({ email: data.email }, "User logged in successfully");
            return {user,token}
     }
 

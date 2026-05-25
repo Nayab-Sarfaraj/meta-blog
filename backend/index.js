@@ -3,7 +3,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const connectToDb = require("./db/conn");
 const cors = require("cors");
-
+const { httpLogger } = require("./middleware/httpLogger");
 const app = express();
 
 // Call at startup for non-serverless environments
@@ -11,6 +11,7 @@ connectToDb();
 
 app.use(express.json());
 app.use(cookieParser());
+app.use(httpLogger)
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -73,7 +74,8 @@ const blogRouter = require("./routes/blogRoutes");
 app.use("/api/v1", blogRouter);
 
 const ErrorhandlerMiddleware = require("./middleware/error");
+const { logger } = require("./utils/logger");
 app.use(ErrorhandlerMiddleware);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log("running on port " + PORT));
+app.listen(PORT, () => logger.info("running on port " + PORT));

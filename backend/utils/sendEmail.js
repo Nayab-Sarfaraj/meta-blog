@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const {logger} = require("../utils/logger")
 const sendMail = async (email, userId) => {
   try {
 
@@ -17,8 +18,7 @@ const sendMail = async (email, userId) => {
     const token = jwt.sign({ userId }, process.env.SECRET_KEY, {
       expiresIn: "1d",
     });
-    // console.log(token);
-    // console.log(email);
+    
     const mailOptions = {
       from: "nayabsarfaraj@gmail.com",
       to: email,
@@ -29,12 +29,11 @@ const sendMail = async (email, userId) => {
         </p>`,
     };
     const info = await transporter.sendMail(mailOptions);
-
-    // console.log("Message sent: ", info.messageId);
+    logger.info({ messageId: info.messageId, email }, "Email sent successfully");
     return info;
   } catch (error) {
-    console.log("error while sending the email");
-    console.log(error);
+    logger.error("error while sending the email");
+    logger.error(error);
   }
 };
 
