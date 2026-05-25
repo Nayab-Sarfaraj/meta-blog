@@ -32,8 +32,7 @@ const sendMail = async (email, userId) => {
     logger.info({ messageId: info.messageId, email }, "Email sent successfully");
     return info;
   } catch (error) {
-    logger.error("error while sending the email");
-    logger.error(error);
+    logger.error({ err: error }, "error while sending the email");
   }
 };
 

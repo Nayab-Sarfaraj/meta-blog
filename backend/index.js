@@ -1,4 +1,4 @@
-require("dotenv").config();
+const env = require("./utils/env")();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const connectToDb = require("./db/conn");
@@ -41,15 +41,15 @@ app.get("/health", async (req, res) => {
     await connectToDb();
     res.json({
       dbState: mongoose.connection.readyState,
-      MONGO_USERNAME: process.env.MONGO_USERNAME ? "set" : "NOT SET",
-      MONGO_PASSWORD: process.env.MONGO_PASSWORD ? "set" : "NOT SET",
+      MONGO_USERNAME: env.MONGO_USERNAME ? "set" : "NOT SET",
+      MONGO_PASSWORD: env.MONGO_PASSWORD ? "set" : "NOT SET",
       connected: mongoose.connection.readyState === 1,
     });
   } catch (err) {
     res.json({
       dbState: mongoose.connection.readyState,
-      MONGO_USERNAME: process.env.MONGO_USERNAME ? "set" : "NOT SET",
-      MONGO_PASSWORD: process.env.MONGO_PASSWORD ? "set" : "NOT SET",
+      MONGO_USERNAME: env.MONGO_USERNAME ? "set" : "NOT SET",
+      MONGO_PASSWORD: env.MONGO_PASSWORD ? "set" : "NOT SET",
       error: err.message,
     });
   }
@@ -77,5 +77,5 @@ const ErrorhandlerMiddleware = require("./middleware/error");
 const { logger } = require("./utils/logger");
 app.use(ErrorhandlerMiddleware);
 
-const PORT = process.env.PORT || 5000;
+const PORT = env.PORT || 5000;
 app.listen(PORT, () => logger.info("running on port " + PORT));
