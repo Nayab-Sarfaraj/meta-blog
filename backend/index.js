@@ -4,14 +4,20 @@ const cookieParser = require("cookie-parser");
 const connectToDb = require("./db/conn");
 const cors = require("cors");
 const { httpLogger } = require("./middleware/httpLogger");
+const { logger } = require("./utils/logger");
+const { connectToRedis } = require("./config/redis");
+const { globalRateLimiter } = require("./middleware/rateLimiter");
+
 const app = express();
 
 // Call at startup for non-serverless environments
 connectToDb();
+connectToRedis();
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(httpLogger)
+// app.use(globalRateLimiter)
 
 const allowedOrigins = [
   "http://localhost:3000",
@@ -58,7 +64,9 @@ app.get("/health", async (req, res) => {
 // Ensure DB is connected on each request (safe for Vercel serverless cold starts)
 app.use(async (req, res, next) => {
   try {
-    await connectToDb();
+    await Promise.all([
+      connectToDb()
+    ])
     next();
   } catch (err) {
     return res.status(500).json({ success: false, message: "Database connection failed" });
@@ -74,7 +82,7 @@ const blogRouter = require("./routes/blogRoutes");
 app.use("/api/v1", blogRouter);
 
 const ErrorhandlerMiddleware = require("./middleware/error");
-const { logger } = require("./utils/logger");
+
 app.use(ErrorhandlerMiddleware);
 
 const PORT = env.PORT || 5000;

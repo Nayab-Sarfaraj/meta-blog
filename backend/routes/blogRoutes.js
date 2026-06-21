@@ -17,6 +17,7 @@ const isAuthenticated = require("../middleware/auth");
 const validateZod = require("../middleware/validateZod");
 const upload = require("../middleware/multer");
 const createBlogSchema = require("../validator/blog.schema");
+const { cacheMiddleware } = require("../middleware/cachedMiddleware");
 
 const router = require("express").Router();
 
@@ -24,7 +25,7 @@ router
   .route("/create")
   .post(isAuthenticated, upload.single("coverImage"), validateZod(createBlogSchema),createBlog);
 
-router.route("/blogs").get(getAllBlogs);
+router.route("/blogs").get(cacheMiddleware,getAllBlogs);
 router
   .route("/blog/:id")
   .get(getSingleBlog)

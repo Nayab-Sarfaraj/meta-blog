@@ -120,7 +120,7 @@ const BlogDescription = () => {
                   <span className="text-[#696A75] capitalize text-base">{blog?.author.name}</span>
                 </Link>
                 <span className="text-[#696A75] text-sm">
-                  <ReactTimeAgo date={blog?.createdAt} locale="en-US" />
+                  <ReactTimeAgo date={blog?.createdAt ? new Date(blog.createdAt).getTime() : Date.now()} locale="en-US" />
                 </span>
               </div>
 

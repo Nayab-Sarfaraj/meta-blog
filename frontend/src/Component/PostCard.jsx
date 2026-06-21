@@ -29,7 +29,7 @@ const PostCard = ({ blog }) => {
               <div className="text-[#97989F] text-sm capitalize">{authorName}</div>
             </div>
             <div className="text-[#97989F] text-sm">
-              <ReactTimeAgo date={blog.createdAt} locale="en-US" />
+              <ReactTimeAgo date={new Date(blog.createdAt).getTime()} locale="en-US" />
             </div>
           </div>
         </div>

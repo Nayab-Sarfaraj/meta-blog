@@ -6,6 +6,7 @@ const { SuccessResponse } = require("../utils/apiResponse");
 const uploadOnCloudinary = require("../utils/cloudinary");
 const ErrorHandler = require("../utils/errorhandler");
 const { logger } = require("../utils/logger");
+const { redisClient } = require("../config/redis");
 
 const updateBlog = async (req, res, next) => {
   try {
@@ -40,6 +41,10 @@ const deleteBlog = async (req, res, next) => {
       author: req.user._id,
     });
     if (!deletedBlog) return next(new ErrorHandler("Blod not found", 404));
+    const keys = await redisClient.keys('blogs:page:*');
+    if (keys.length > 0) {
+      await redisClient.del(keys);
+    }
     return res.json({ success: true });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -77,8 +82,14 @@ const getAllBlogs = async (req, res, next) => {
       .skip(toBeSkipped)
       .sort({ createdAt: -1 })
       .populate("author");
+      if(req?.cacheKey){
+    redisClient.set(req.cacheKey, JSON.stringify(blogs),
+    {
+      EX: 300
+    })
+      }
 
-    return res.json({ success: true, blogs });
+    return res.json({ success: true, blogs,source: "database" });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
@@ -94,7 +105,10 @@ const createBlog = async (req, res, next) => {
     const blog = await blogService.createBlog({description,title,category,filePath,author:req.user._id})
 
     logger.info({ blogId: blog._id, author: req.user._id }, "New blog post created");
-
+    const keys = await redisClient.keys('blogs:page:*');
+    if (keys.length > 0) {
+      await redisClient.del(keys);
+    }
     SuccessResponse(res,{
       message:"Blog created successfully",
       data:blog,
