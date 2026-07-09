@@ -5,6 +5,7 @@ const ErrorHandler = require("../utils/errorhandler");
 const sendMail = require("../utils/sendEmail");
 const uploadOnCloudinary = require("../utils/cloudinary");
 const UserService = require("../services/user.service");
+const { redisClient } = require("../config/redis");
 const register = async (req, res, next) => {
   try {     
       const user = await UserService.createUser(req.body)
@@ -108,6 +109,7 @@ const uploadProfilePhoto = async (req, res, next) => {
     const user = await User.findById(req.user._id);
     user.avatar = response.url;
     const savedUser = await user.save();
+    await redisClient.del(`author:${req.user._id}`)
     return res.json({ success: true, savedUser });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -131,6 +133,7 @@ const completeProfile = async (req, res, next) => {
         new: true,
       });
     }
+    await redisClient.del(`author:${req.user._id}`)
     return res.json({ success: true, updatedUser });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));

@@ -28,6 +28,13 @@ const updateBlog = async (req, res, next) => {
         new: true,
       }
     );
+    const keys = await redisClient.keys('blogs:page:*');
+    if (keys.length > 0) {
+      await redisClient.del(keys);
+    }
+    await redisClient.del(`author:${req.user._id}`)
+    await redisClient.del(`blog:${updatedBlog._id}`)
+    await redisClient.del(`user:blogs:${req.user._id}`)
     return res.json({ success: true, updatedBlog });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -45,6 +52,9 @@ const deleteBlog = async (req, res, next) => {
     if (keys.length > 0) {
       await redisClient.del(keys);
     }
+    await redisClient.del(`author:${req.user._id}`)
+    await redisClient.del(`blog:${deletedBlog._id}`)
+    await redisClient.del(`user:blogs:${req.user._id}`)
     return res.json({ success: true });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -53,6 +63,9 @@ const deleteBlog = async (req, res, next) => {
 const getMyBlog = async (req, res, next) => {
   try {
     const myBlogs = await Blog.find({ author: req.user._id }).populate("author");
+    await redisClient.set(req.cacheKey,JSON.stringify(myBlogs),{
+      EX:300
+    })
     return res.json({ success: true, myBlogs });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -67,6 +80,12 @@ const getSingleBlog = async (req, res, next) => {
       .populate({ path: "comments.userId", select: "name avatar" });
 
     if (!blog) return next(new ErrorHandler("Blog not found", 404));
+
+    if (req.cacheKey) {
+      redisClient.set(req.cacheKey, JSON.stringify(blog), {
+        EX: 300
+      });
+    }
     return res.json({ success: true, blog });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -109,6 +128,8 @@ const createBlog = async (req, res, next) => {
     if (keys.length > 0) {
       await redisClient.del(keys);
     }
+    await redisClient.del(`author:${req.user._id}`)
+    await redisClient.del(`user:blogs:${req.user._id}`)
     SuccessResponse(res,{
       message:"Blog created successfully",
       data:blog,
@@ -133,6 +154,7 @@ const increaseLike = async (req, res, next) => {
     user.likedBlogs.push(blogId);
     const updatedBlog = await blog.save();
     const updatedUser = await user.save();
+    await redisClient.del(`blog:${updatedBlog._id}`)
     return res
       .status(200)
       .json({ success: true, blog: updatedBlog, updatedUser });
@@ -158,6 +180,7 @@ const decreaseLike = async (req, res, next) => {
     user.likedBlogs = filteredLikedBlogs;
     const updatedBlog = await blog.save();
     const updatedUser = await user.save();
+   await redisClient.del(`blog:${updatedBlog._id}`)
     return res.status(200).json({ success: true, updatedBlog, updatedUser });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -188,6 +211,8 @@ const addComment = async (req, res, next) => {
       .populate("author")
       .populate({ path: "comments.userId", select: "name avatar" });
 
+    await redisClient.del(`blog:${id}`)
+
     return res.status(200).json({ success: true, blog: savedBlog });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
@@ -198,6 +223,13 @@ const fetchAuthorBlogsAndCredential = async (req, res, next) => {
     const authorId = req.params.id;
     const blogs = await Blog.find({ author: authorId });
     const author = await User.findById(authorId);
+    if (req.cacheKey) {
+      await redisClient.hSet(req.cacheKey, {
+        blogs: JSON.stringify(blogs), 
+        author: JSON.stringify(author)
+      });
+      await redisClient.expire(req.cacheKey, 300);
+    }
     return res.status(200).json({ success: true, blogs, author });
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));

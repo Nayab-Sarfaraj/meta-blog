@@ -1,5 +1,5 @@
 config:
-  target: "http://localhost:8080"
+  target: "https://blog-api-puce-eta.vercel.app"
   phases:
     - duration: 20
       arrivalRate: 50

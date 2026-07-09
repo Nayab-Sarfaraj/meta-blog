@@ -1,4 +1,5 @@
 const { ErrorResponse } = require("../utils/apiResponse");
+const { logger } = require("../utils/logger");
 
 module.exports = (err, req, res, next) => {
   // Make sure the status exists on the error object

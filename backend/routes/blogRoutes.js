@@ -28,14 +28,14 @@ router
 router.route("/blogs").get(cacheMiddleware,getAllBlogs);
 router
   .route("/blog/:id")
-  .get(getSingleBlog)
+  .get(cacheMiddleware, getSingleBlog)
   .delete(isAuthenticated, deleteBlog)
   .put(isAuthenticated, upload.single("coverImage"), updateBlog);
-router.route("/myBlogs").get(isAuthenticated, getMyBlog);
+router.route("/myBlogs").get(isAuthenticated, cacheMiddleware,getMyBlog);
 router.route("/like/:id").post(isAuthenticated, increaseLike);
 router.route("/unlike/:id").post(isAuthenticated, decreaseLike);
 router.route("/addcomment/:id").post(isAuthenticated, addComment);
-router.route("/author/:id").get(isAuthenticated, fetchAuthorBlogsAndCredential);
+router.route("/author/:id").get(isAuthenticated,cacheMiddleware, fetchAuthorBlogsAndCredential);
 router.route("/search").post(isAuthenticated, searchBlogs);
 router.route("/carousel").get(getSliderContent);
 module.exports = router;
